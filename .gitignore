@@ -1,0 +1,85 @@
+# ==========================================
+# .NET - Archivos generados
+# ==========================================
+**/bin/
+**/obj/
+**/out/
+
+# ==========================================
+# Visual Studio y VS Code
+# ==========================================
+.vs/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ==========================================
+# Archivos temporales y logs
+# ==========================================
+*.log
+logs/
+[Tt]emp/
+[Tt]mp/
+*.tmp
+*.bak
+*.swp
+*.cache
+
+# ==========================================
+# Configuración local y secretos
+# ==========================================
+.env
+.env.*
+!.env.example
+secrets.json
+secrets.*.json
+appsettings.Local.json
+appsettings.Development.Local.json
+
+# User Secrets de .NET
+secrets/
+
+# ==========================================
+# Certificados y claves privadas
+# ==========================================
+*.pfx
+*.p12
+*.key
+*.pem
+*.cer
+
+# ==========================================
+# Cobertura y resultados de pruebas
+# ==========================================
+TestResults/
+**/TestResults/
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+
+# ==========================================
+# Paquetes y herramientas locales
+# ==========================================
+.nuget/
+packages/
+node_modules/
+
+# ==========================================
+# Sistema operativo
+# ==========================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ==========================================
+# Archivos de respaldo
+# ==========================================
+*.old
+*.orig
+*.rej
