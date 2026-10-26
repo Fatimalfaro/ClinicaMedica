@@ -1,22 +1,31 @@
+
+using ClinicaMedica.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Registrar los controladores
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+// Configurar la conexion con MySQL
+var connectionString = builder.Configuration
+    .GetConnectionString("ClinicaMedica");
+
+builder.Services.AddDbContext<ClinicaMedicaContext>(options =>
+    options.UseMySQL(connectionString!));
+
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configurar los endpoints de OpenAPI
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 
