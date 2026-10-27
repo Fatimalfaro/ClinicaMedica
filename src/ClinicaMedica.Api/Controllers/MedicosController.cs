@@ -1,6 +1,6 @@
-
 using ClinicaMedica.Application.Services;
 using ClinicaMedica.Domain.Entities;
+using ClinicaMedica.Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicaMedica.Api.Controllers;
@@ -20,7 +20,8 @@ public class MedicosController : ControllerBase
     public async Task<IActionResult> ObtenerTodos()
     {
         var medicos = await _service.ObtenerTodosAsync();
-        return Ok(medicos);
+        var resultado = medicos.Select(MapearMedico).ToList();
+        return Ok(resultado);
     }
 
     [HttpGet("{id:int}")]
@@ -31,40 +32,46 @@ public class MedicosController : ControllerBase
         if (medico == null)
             return NotFound(new { mensaje = "Medico no encontrado" });
 
-        return Ok(medico);
+        return Ok(MapearMedico(medico));
     }
 
     [HttpPost]
-    public async Task<IActionResult> Crear(Medico medico)
-    {
-        await _service.AgregarAsync(medico);
+public async Task<IActionResult> Crear(Medico medico)
+{
+    await _service.AgregarAsync(medico);
 
-        return CreatedAtAction(
-            nameof(ObtenerPorId),
-            new { id = medico.Id },
-            medico);
-    }
+    var medicoCreado = await _service.ObtenerPorIdAsync(medico.Id);
 
-    [HttpPut("{id:int}")]
-    public async Task<IActionResult> Actualizar(int id, Medico datos)
-    {
-        var medico = await _service.ObtenerPorIdAsync(id);
+    return CreatedAtAction(
+        nameof(ObtenerPorId),
+        new { id = medico.Id },
+        MapearMedico(medicoCreado ?? medico));
+}
 
-        if (medico == null)
-            return NotFound(new { mensaje = "Medico no encontrado" });
+   [HttpPut("{id:int}")]
+public async Task<IActionResult> Actualizar(int id, Medico datos)
+{
+    var medico = await _service.ObtenerPorIdAsync(id);
 
-        medico.Nombre = datos.Nombre;
-        medico.Apellido = datos.Apellido;
-        medico.Matricula = datos.Matricula;
-        medico.Email = datos.Email;
-        medico.Telefono = datos.Telefono;
-        medico.PrecioConsulta = datos.PrecioConsulta;
-        medico.EspecialidadId = datos.EspecialidadId;
+    if (medico == null)
+        return NotFound(new { mensaje = "Medico no encontrado" });
 
-        await _service.ActualizarAsync(medico);
+    medico.Nombre = datos.Nombre;
+    medico.Apellido = datos.Apellido;
+    medico.Matricula = datos.Matricula;
+    medico.Email = datos.Email;
+    medico.Telefono = datos.Telefono;
+    medico.PrecioConsulta = datos.PrecioConsulta;
+    medico.EspecialidadId = datos.EspecialidadId;
 
-        return Ok(medico);
-    }
+    await _service.ActualizarAsync(medico);
+
+    var medicoActualizado = await _service.ObtenerPorIdAsync(id);
+
+    return Ok(MapearMedico(medicoActualizado ?? medico));
+}
+
+       
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Eliminar(int id)
@@ -78,4 +85,27 @@ public class MedicosController : ControllerBase
 
         return NoContent();
     }
+
+     private static MedicoDto MapearMedico(Medico medico)
+    {
+        return new MedicoDto
+        {
+            Id = medico.Id,
+            Nombre = medico.Nombre,
+            Apellido = medico.Apellido,
+            Matricula = medico.Matricula,
+            Email = medico.Email,
+            Telefono = medico.Telefono,
+            PrecioConsulta = medico.PrecioConsulta,
+            Especialidad = medico.Especialidad == null
+                ? null
+                : new EspecialidadResumenDto
+                {
+                    Id = medico.Especialidad.Id,
+                    Nombre = medico.Especialidad.Nombre,
+                    Descripcion = medico.Especialidad.Descripcion
+                }
+        };
+    }
 }
+

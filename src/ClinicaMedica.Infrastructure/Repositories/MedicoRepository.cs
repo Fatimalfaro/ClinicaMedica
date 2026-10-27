@@ -17,23 +17,40 @@ public class MedicoRepository : IMedicoRepository
 
     public async Task<List<Medico>> ObtenerTodosAsync()
     {
-        return await _context.Medicos
+        var medicos = await _context.Medicos
             .AsNoTracking()
             .Include(m => m.Especialidad)
             .ToListAsync();
+
+        foreach (var medico in medicos)
+        {
+            if (medico.Especialidad != null)
+            {
+                medico.Especialidad.Medicos = new List<Medico>();
+            }
+        }
+
+        return medicos;
     }
 
     public async Task<Medico?> ObtenerPorIdAsync(int id)
     {
-        return await _context.Medicos
+        var medico = await _context.Medicos
             .AsNoTracking()
             .Include(m => m.Especialidad)
             .FirstOrDefaultAsync(m => m.Id == id);
+
+        if (medico?.Especialidad != null)
+        {
+            medico.Especialidad.Medicos = new List<Medico>();
+        }
+
+        return medico;
     }
 
     public async Task AgregarAsync(Medico medico)
     {
-        _context.Medicos.Add(medico);
+        await _context.Medicos.AddAsync(medico);
         await _context.SaveChangesAsync();
     }
 

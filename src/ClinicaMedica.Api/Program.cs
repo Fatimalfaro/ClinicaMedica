@@ -7,7 +7,12 @@ using ClinicaMedica.Infrastructure.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Registrar los controladores
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler =
+            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
 
 // Configurar la conexion con MySQL
 var connectionString = builder.Configuration

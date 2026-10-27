@@ -19,6 +19,7 @@ public class EspecialidadRepository : IEspecialidadRepository
     {
         return await _context.Especialidades
             .AsNoTracking()
+            .Include(e => e.Medicos)
             .ToListAsync();
     }
 
@@ -31,7 +32,7 @@ public class EspecialidadRepository : IEspecialidadRepository
 
     public async Task AgregarAsync(Especialidad especialidad)
     {
-        _context.Especialidades.Add(especialidad);
+        await _context.Especialidades.AddAsync(especialidad);
         await _context.SaveChangesAsync();
     }
 

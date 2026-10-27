@@ -1,4 +1,4 @@
-
+using ClinicaMedica.Application.DTOs;
 using ClinicaMedica.Application.Services;
 using ClinicaMedica.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,24 @@ public class EspecialidadesController : ControllerBase
     public async Task<IActionResult> ObtenerTodas()
     {
         var especialidades = await _service.ObtenerTodasAsync();
-        return Ok(especialidades);
+        var resultado = especialidades.Select(e => new EspecialidadDto
+        {
+            Id = e.Id,
+            Nombre = e.Nombre,
+            Descripcion = e.Descripcion,
+            Medicos = e.Medicos.Select(m => new MedicoResumenDto
+            {
+                Id = m.Id,
+                Nombre = m.Nombre,
+                Apellido = m.Apellido,
+                Matricula = m.Matricula,
+                Email = m.Email,
+                Telefono = m.Telefono,
+                PrecioConsulta = m.PrecioConsulta
+            }).ToList()
+        }).ToList();
+
+        return Ok(resultado);
     }
 
     [HttpGet("{id:int}")]
@@ -31,7 +48,14 @@ public class EspecialidadesController : ControllerBase
         if (especialidad == null)
             return NotFound(new { mensaje = "Especialidad no encontrada" });
 
-        return Ok(especialidad);
+        var resultado = new EspecialidadSimpleDto
+        {
+            Id = especialidad.Id,
+            Nombre = especialidad.Nombre,
+            Descripcion = especialidad.Descripcion
+        };
+
+        return Ok(resultado);
     }
 
     [HttpPost]
@@ -39,10 +63,17 @@ public class EspecialidadesController : ControllerBase
     {
         await _service.AgregarAsync(especialidad);
 
+        var resultado = new EspecialidadSimpleDto
+        {
+            Id = especialidad.Id,
+            Nombre = especialidad.Nombre,
+            Descripcion = especialidad.Descripcion
+        };
+
         return CreatedAtAction(
             nameof(ObtenerPorId),
             new { id = especialidad.Id },
-            especialidad);
+            resultado);
     }
 
     [HttpPut("{id:int}")]
@@ -58,7 +89,14 @@ public class EspecialidadesController : ControllerBase
 
         await _service.ActualizarAsync(especialidad);
 
-        return Ok(especialidad);
+         var resultado = new EspecialidadSimpleDto
+        {
+            Id = especialidad.Id,
+            Nombre = especialidad.Nombre,
+            Descripcion = especialidad.Descripcion
+        };
+
+        return Ok(resultado);
     }
 
     [HttpDelete("{id:int}")]
