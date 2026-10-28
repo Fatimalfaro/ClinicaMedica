@@ -1,4 +1,3 @@
-
 using ClinicaMedica.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
