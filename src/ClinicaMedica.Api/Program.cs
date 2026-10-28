@@ -3,9 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using ClinicaMedica.Application.Interfaces;
 using ClinicaMedica.Application.Services;
 using ClinicaMedica.Infrastructure.Repositories;
-using ClinicaMedica.Application.Interfaces;
-using ClinicaMedica.Application.Services;
-using ClinicaMedica.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
