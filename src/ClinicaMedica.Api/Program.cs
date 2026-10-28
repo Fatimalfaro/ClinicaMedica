@@ -36,6 +36,9 @@ builder.Services.AddScoped<TurnoService>();
 builder.Services.AddScoped<IHistoriaClinicaRepository,HistoriaClinicaRepository>();
 builder.Services.AddScoped<HistoriaClinicaService>();
 
+builder.Services.AddScoped<IEvolucionRepository, EvolucionRepository>();
+builder.Services.AddScoped<EvolucionService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
