@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using ClinicaMedica.Application.Interfaces;
 using ClinicaMedica.Application.Services;
 using ClinicaMedica.Infrastructure.Repositories;
+using ClinicaMedica.Application.Interfaces;
+using ClinicaMedica.Application.Services;
+using ClinicaMedica.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,9 @@ builder.Services.AddScoped<IMedicoRepository, MedicoRepository>();
 
 builder.Services.AddScoped<EspecialidadService>();
 builder.Services.AddScoped<MedicoService>();
+
+builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
+builder.Services.AddScoped<PacienteService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
