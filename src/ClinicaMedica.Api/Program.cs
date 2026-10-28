@@ -39,6 +39,9 @@ builder.Services.AddScoped<HistoriaClinicaService>();
 builder.Services.AddScoped<IEvolucionRepository, EvolucionRepository>();
 builder.Services.AddScoped<EvolucionService>();
 
+builder.Services.AddScoped<IRecetaRepository, RecetaRepository>();
+builder.Services.AddScoped<RecetaService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
