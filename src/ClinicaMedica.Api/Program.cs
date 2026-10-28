@@ -27,6 +27,9 @@ builder.Services.AddScoped<IMedicoRepository, MedicoRepository>();
 builder.Services.AddScoped<EspecialidadService>();
 builder.Services.AddScoped<MedicoService>();
 
+builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
+builder.Services.AddScoped<PacienteService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 

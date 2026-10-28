@@ -1,4 +1,3 @@
-
 using ClinicaMedica.Application.Interfaces;
 using ClinicaMedica.Domain.Entities;
 
