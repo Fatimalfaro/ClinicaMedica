@@ -19,6 +19,35 @@ namespace ClinicaMedica.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("ClinicaMedica.Domain.Entities.Diagnostico", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<DateTime>("FechaDiagnostico")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("HistoriaClinicaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HistoriaClinicaId");
+
+                    b.ToTable("Diagnosticos");
+                });
+
             modelBuilder.Entity("ClinicaMedica.Domain.Entities.Especialidad", b =>
                 {
                     b.Property<int>("Id")
@@ -313,6 +342,17 @@ namespace ClinicaMedica.Infrastructure.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("ClinicaMedica.Domain.Entities.Diagnostico", b =>
+                {
+                    b.HasOne("ClinicaMedica.Domain.Entities.HistoriaClinica", "HistoriaClinica")
+                        .WithMany("Diagnosticos")
+                        .HasForeignKey("HistoriaClinicaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("HistoriaClinica");
+                });
+
             modelBuilder.Entity("ClinicaMedica.Domain.Entities.Evolucion", b =>
                 {
                     b.HasOne("ClinicaMedica.Domain.Entities.HistoriaClinica", "HistoriaClinica")
@@ -413,6 +453,8 @@ namespace ClinicaMedica.Infrastructure.Migrations
 
             modelBuilder.Entity("ClinicaMedica.Domain.Entities.HistoriaClinica", b =>
                 {
+                    b.Navigation("Diagnosticos");
+
                     b.Navigation("Evoluciones");
                 });
 #pragma warning restore 612, 618

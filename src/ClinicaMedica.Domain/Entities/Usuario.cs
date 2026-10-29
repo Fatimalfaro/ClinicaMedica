@@ -1,4 +1,3 @@
-
 namespace ClinicaMedica.Domain.Entities;
 
 public class Usuario

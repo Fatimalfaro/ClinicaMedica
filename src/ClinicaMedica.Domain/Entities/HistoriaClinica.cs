@@ -13,6 +13,9 @@ public class HistoriaClinica
     public Medico? Medico { get; set; }
 
     public DateTime FechaCreacion { get; set; } = DateTime.Now;
-
+    public ICollection<Diagnostico> Diagnosticos { get; set; }
+    = new List<Diagnostico>();
     public ICollection<Evolucion> Evoluciones { get; set; } = new List<Evolucion>();
+
+
 }
