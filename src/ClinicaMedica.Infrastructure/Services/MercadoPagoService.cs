@@ -2,6 +2,7 @@ using ClinicaMedica.Domain.Entities;
 using MercadoPago.Client.Preference;
 using MercadoPago.Config;
 using Microsoft.Extensions.Configuration;
+using MercadoPago.Client.Payment;
 
 namespace ClinicaMedica.Infrastructure.Services;
 
@@ -55,4 +56,29 @@ public class MercadoPagoService
 
         return (preferencia.Id, preferencia.InitPoint);
     }
+
+    public async Task<(string Estado, string Referencia, decimal Monto)>
+    ConsultarPagoAsync(long pagoExternoId)
+{
+    var accessToken = _configuration["MercadoPago:AccessToken"];
+
+    if (string.IsNullOrWhiteSpace(accessToken))
+    {
+        throw new InvalidOperationException(
+            "No está configurado el Access Token de Mercado Pago.");
+    }
+
+    MercadoPagoConfig.AccessToken = accessToken;
+
+    var cliente = new PaymentClient();
+    var pago = await cliente.GetAsync(pagoExternoId);
+
+    return (
+        pago.Status ?? string.Empty,
+        pago.ExternalReference ?? string.Empty,
+        pago.TransactionAmount ?? 0m
+    );
+}
+
+    
 }
