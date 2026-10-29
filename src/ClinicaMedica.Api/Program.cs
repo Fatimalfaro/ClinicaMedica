@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ClinicaMedica.Application.Interfaces;
 using ClinicaMedica.Application.Services;
 using ClinicaMedica.Infrastructure.Repositories;
+using ClinicaMedica.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +51,8 @@ builder.Services.AddScoped<PagoService>();
 
 builder.Services.AddScoped<IDiagnosticoRepository, DiagnosticoRepository>();
 builder.Services.AddScoped<DiagnosticoService>();
+
+builder.Services.AddScoped<MercadoPagoService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
