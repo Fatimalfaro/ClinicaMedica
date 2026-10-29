@@ -43,8 +43,10 @@ builder.Services.AddScoped<IRecetaRepository, RecetaRepository>();
 builder.Services.AddScoped<RecetaService>();
 
 builder.Services.AddScoped<IPedidoLaboratorioRepository, PedidoLaboratorioRepository>();
-
 builder.Services.AddScoped<PedidoLaboratorioService>();
+
+builder.Services.AddScoped<IPagoRepository, PagoRepository>();
+builder.Services.AddScoped<PagoService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
