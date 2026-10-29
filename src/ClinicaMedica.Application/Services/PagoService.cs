@@ -36,4 +36,14 @@ public class PagoService
     {
         return _repository.ObtenerMontoTurnoAsync(turnoId);
     }
+
+    public Task<Pago?> ObtenerPagoParaIntegracionAsync(int id)
+    {
+        return _repository.ObtenerPorIdAsync(id);
+    }
+
+    public Task GuardarActualizacionAsync(Pago pago)
+    {
+        return _repository.ActualizarAsync(pago);
+    }
 }
