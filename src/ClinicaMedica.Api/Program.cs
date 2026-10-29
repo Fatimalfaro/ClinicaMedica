@@ -54,6 +54,8 @@ builder.Services.AddScoped<DiagnosticoService>();
 
 builder.Services.AddScoped<MercadoPagoService>();
 
+builder.Services.AddScoped<VerificadorWebhook>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
