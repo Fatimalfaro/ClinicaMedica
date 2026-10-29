@@ -48,6 +48,9 @@ builder.Services.AddScoped<PedidoLaboratorioService>();
 builder.Services.AddScoped<IPagoRepository, PagoRepository>();
 builder.Services.AddScoped<PagoService>();
 
+builder.Services.AddScoped<IDiagnosticoRepository, DiagnosticoRepository>();
+builder.Services.AddScoped<DiagnosticoService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
