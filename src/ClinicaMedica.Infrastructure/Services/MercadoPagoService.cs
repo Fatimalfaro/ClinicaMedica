@@ -15,8 +15,10 @@ public class MercadoPagoService
         _configuration = configuration;
     }
 
-    public async Task<(string PreferenciaId, string Url)> CrearPreferenciaAsync(
-        Pago pago)
+    public async Task<(
+    string PreferenciaId,
+    string InitPoint,
+    string SandboxInitPoint)> CrearPreferenciaAsync(Pago pago)
     {
         var accessToken = _configuration["MercadoPago:AccessToken"];
 
@@ -48,13 +50,16 @@ public class MercadoPagoService
         var preferencia = await cliente.CreateAsync(solicitud);
 
         if (string.IsNullOrWhiteSpace(preferencia.Id) ||
-            string.IsNullOrWhiteSpace(preferencia.InitPoint))
+            string.IsNullOrWhiteSpace(preferencia.InitPoint) ||
+            string.IsNullOrWhiteSpace(preferencia.SandboxInitPoint))
         {
             throw new InvalidOperationException(
-                "Mercado Pago no devolvió el ID y la URL de checkout.");
+                "Mercado Pago no devolvió los datos de la preferencia");
         }
 
-        return (preferencia.Id, preferencia.InitPoint);
+        return (preferencia.Id,
+                preferencia.InitPoint,
+                preferencia.SandboxInitPoint);
     }
 
     public async Task<(string Estado, string Referencia, decimal Monto)>

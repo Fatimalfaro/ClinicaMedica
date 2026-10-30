@@ -157,7 +157,8 @@ public async Task<IActionResult> CrearPreferencia(int id)
         {
             pagoId = pago.Id,
             preferenciaId = resultado.PreferenciaId,
-            urlCheckout = resultado.Url
+            initPoint = resultado.InitPoint,
+            sandboxInitPoint = resultado.SandboxInitPoint
         });
     }
     catch (Exception ex)
