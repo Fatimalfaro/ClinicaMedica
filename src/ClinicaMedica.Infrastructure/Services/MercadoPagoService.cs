@@ -3,10 +3,10 @@ using MercadoPago.Client.Preference;
 using MercadoPago.Config;
 using Microsoft.Extensions.Configuration;
 using MercadoPago.Client.Payment;
-
+using ClinicaMedica.Application.Interfaces;
 namespace ClinicaMedica.Infrastructure.Services;
 
-public class MercadoPagoService
+public class MercadoPagoService : IMercadoPagoService
 {
     private readonly IConfiguration _configuration;
 

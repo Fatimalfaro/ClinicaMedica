@@ -56,6 +56,8 @@ builder.Services.AddScoped<MercadoPagoService>();
 
 builder.Services.AddScoped<VerificadorWebhook>();
 
+builder.Services.AddScoped<IMercadoPagoService, MercadoPagoService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 

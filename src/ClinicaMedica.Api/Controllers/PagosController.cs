@@ -2,7 +2,7 @@ using ClinicaMedica.Application.DTOs;
 using ClinicaMedica.Application.Services;
 using ClinicaMedica.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using ClinicaMedica.Infrastructure.Services;
+using ClinicaMedica.Application.Interfaces;
 
 namespace ClinicaMedica.Api.Controllers;
 
@@ -11,11 +11,11 @@ namespace ClinicaMedica.Api.Controllers;
 public class PagosController : ControllerBase
 {
     private readonly PagoService _service;
-    private readonly MercadoPagoService _mercadoPagoService;
+    private readonly IMercadoPagoService _mercadoPagoService;
 
     public PagosController(
     PagoService service,
-    MercadoPagoService mercadoPagoService)
+    IMercadoPagoService mercadoPagoService)
 {
     _service = service;
     _mercadoPagoService = mercadoPagoService;
