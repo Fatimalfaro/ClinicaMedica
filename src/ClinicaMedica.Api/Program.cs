@@ -53,6 +53,9 @@ builder.Services.AddScoped<IDiagnosticoRepository, DiagnosticoRepository>();
 builder.Services.AddScoped<DiagnosticoService>();
 
 builder.Services.AddScoped<MercadoPagoService>();
+builder.Services.AddScoped<IMercadoPagoService>(
+    provider => provider.GetRequiredService<MercadoPagoService>()
+);
 
 builder.Services.AddScoped<VerificadorWebhook>();
 
