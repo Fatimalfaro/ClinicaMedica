@@ -59,6 +59,8 @@ builder.Services.AddScoped<IMercadoPagoService>(
 
 builder.Services.AddScoped<VerificadorWebhook>();
 
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
