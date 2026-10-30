@@ -153,6 +153,18 @@ public class ClinicaMedicaContext : DbContext
         modelBuilder.Entity<Medico>()
             .Property(m => m.PrecioConsulta)
             .HasPrecision(10, 2);
+
+        modelBuilder.Entity<Paciente>()
+    .HasOne(p => p.Usuario)
+    .WithOne(u => u.Paciente)
+    .HasForeignKey<Paciente>(p => p.UsuarioId)
+    .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Medico>()
+            .HasOne(m => m.Usuario)
+            .WithOne(u => u.Medico)
+            .HasForeignKey<Medico>(m => m.UsuarioId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 
 }

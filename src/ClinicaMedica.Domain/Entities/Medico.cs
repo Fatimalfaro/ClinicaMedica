@@ -19,4 +19,7 @@ public class Medico
     public int EspecialidadId { get; set; }
 
     public Especialidad? Especialidad { get; set; }
+
+    public int? UsuarioId { get; set; }
+    public Usuario? Usuario { get; set; }
 }

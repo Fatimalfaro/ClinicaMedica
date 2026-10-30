@@ -149,11 +149,17 @@ namespace ClinicaMedica.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EspecialidadId");
 
                     b.HasIndex("Matricula")
+                        .IsUnique();
+
+                    b.HasIndex("UsuarioId")
                         .IsUnique();
 
                     b.ToTable("Medicos");
@@ -189,9 +195,15 @@ namespace ClinicaMedica.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DNI")
+                        .IsUnique();
+
+                    b.HasIndex("UsuarioId")
                         .IsUnique();
 
                     b.ToTable("Pacientes");
@@ -391,7 +403,24 @@ namespace ClinicaMedica.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ClinicaMedica.Domain.Entities.Usuario", "Usuario")
+                        .WithOne("Medico")
+                        .HasForeignKey("ClinicaMedica.Domain.Entities.Medico", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Especialidad");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("ClinicaMedica.Domain.Entities.Paciente", b =>
+                {
+                    b.HasOne("ClinicaMedica.Domain.Entities.Usuario", "Usuario")
+                        .WithOne("Paciente")
+                        .HasForeignKey("ClinicaMedica.Domain.Entities.Paciente", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("ClinicaMedica.Domain.Entities.Pago", b =>
@@ -456,6 +485,13 @@ namespace ClinicaMedica.Infrastructure.Migrations
                     b.Navigation("Diagnosticos");
 
                     b.Navigation("Evoluciones");
+                });
+
+            modelBuilder.Entity("ClinicaMedica.Domain.Entities.Usuario", b =>
+                {
+                    b.Navigation("Medico");
+
+                    b.Navigation("Paciente");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,6 +12,10 @@ public class Usuario
 
     public string PasswordHash { get; set; } = string.Empty;
 
+    public Paciente? Paciente { get; set; }
+
+    public Medico? Medico { get; set; }
+
     public RolUsuario Rol { get; set; } = RolUsuario.Paciente;
 }
 
