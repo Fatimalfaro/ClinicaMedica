@@ -1,3 +1,4 @@
+using ClinicaMedica.Application.Interfaces;
 using ClinicaMedica.Application.Services;
 using ClinicaMedica.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +10,13 @@ namespace ClinicaMedica.Api.Controllers;
 public class NotificacionesPagoController : ControllerBase
 {
     private readonly PagoService _pagoService;
-    private readonly MercadoPagoService _mercadoPagoService;
+    private readonly IMercadoPagoService _mercadoPagoService;
     private readonly VerificadorWebhook _verificador;
     private readonly IConfiguration _configuration;
 
     public NotificacionesPagoController(
         PagoService pagoService,
-        MercadoPagoService mercadoPagoService,
+        IMercadoPagoService mercadoPagoService,
         VerificadorWebhook verificador,
         IConfiguration configuration)
     {
