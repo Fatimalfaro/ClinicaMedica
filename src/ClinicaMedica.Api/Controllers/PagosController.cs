@@ -2,6 +2,7 @@ using ClinicaMedica.Application.DTOs;
 using ClinicaMedica.Application.Services;
 using ClinicaMedica.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using ClinicaMedica.Infrastructure.Services;
 
 namespace ClinicaMedica.Api.Controllers;
 
@@ -10,11 +11,15 @@ namespace ClinicaMedica.Api.Controllers;
 public class PagosController : ControllerBase
 {
     private readonly PagoService _service;
+    private readonly MercadoPagoService _mercadoPagoService;
 
-    public PagosController(PagoService service)
-    {
-        _service = service;
-    }
+    public PagosController(
+    PagoService service,
+    MercadoPagoService mercadoPagoService)
+{
+    _service = service;
+    _mercadoPagoService = mercadoPagoService;
+}
 
     [HttpGet]
     public async Task<IActionResult> ObtenerTodos()
@@ -110,4 +115,60 @@ public class PagosController : ControllerBase
             new { id = pago.Id },
             resultado);
     }
+
+    [HttpPost("{id:int}/preferencia")]
+public async Task<IActionResult> CrearPreferencia(int id)
+{
+    var pago = await _service.ObtenerPagoParaIntegracionAsync(id);
+
+    if (pago == null)
+    {
+        return NotFound(new
+        {
+            mensaje = "No se encontró el pago."
+        });
+    }
+
+    if (pago.Estado != "Pendiente")
+    {
+        return BadRequest(new
+        {
+            mensaje = "Solo se pueden iniciar pagos pendientes."
+        });
+    }
+
+    if (!string.IsNullOrWhiteSpace(pago.PreferenciaPagoId))
+    {
+        return Conflict(new
+        {
+            mensaje = "Este pago ya tiene una preferencia asociada."
+        });
+    }
+
+    try
+    {
+        var resultado = await _mercadoPagoService
+            .CrearPreferenciaAsync(pago);
+
+        pago.PreferenciaPagoId = resultado.PreferenciaId;
+        await _service.GuardarActualizacionAsync(pago);
+
+        return Ok(new
+        {
+            pagoId = pago.Id,
+            preferenciaId = resultado.PreferenciaId,
+            initPoint = resultado.InitPoint,
+            sandboxInitPoint = resultado.SandboxInitPoint
+        });
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error al crear preferencia: {ex}");
+
+        return StatusCode(502, new
+        {
+            mensaje = "No se pudo crear la preferencia de pago."
+        });
+    }
+}
 }

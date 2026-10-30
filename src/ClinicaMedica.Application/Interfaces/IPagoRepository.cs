@@ -9,4 +9,6 @@ public interface IPagoRepository
     Task AgregarAsync(Pago pago);
     Task<bool> ExisteTurnoAsync(int turnoId);
     Task<decimal?> ObtenerMontoTurnoAsync(int turnoId);
+    Task<Pago?> ObtenerPorPreferenciaAsync(string preferenciaId);
+    Task ActualizarAsync(Pago pago);
 }

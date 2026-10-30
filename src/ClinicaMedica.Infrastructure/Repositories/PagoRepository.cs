@@ -47,4 +47,24 @@ public class PagoRepository : IPagoRepository
             .Select(t => (decimal?)t.Medico!.PrecioConsulta)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<Pago?> ObtenerPorPreferenciaAsync(
+    string preferenciaId)
+    {
+        return await _context.Pagos
+            .FirstOrDefaultAsync(p => p.PreferenciaPagoId == preferenciaId);
+    }
+
+    public async Task<Pago?> ObtenerPorPagoExternoAsync(
+        string pagoExternoId)
+    {
+        return await _context.Pagos
+            .FirstOrDefaultAsync(p => p.PagoExternoId == pagoExternoId);
+    }
+
+    public async Task ActualizarAsync(Pago pago)
+    {
+        _context.Pagos.Update(pago);
+        await _context.SaveChangesAsync();
+    }
 }
