@@ -1,3 +1,4 @@
+
 using ClinicaMedica.Application.Interfaces;
 using ClinicaMedica.Domain.Entities;
 using ClinicaMedica.Infrastructure.Data;
@@ -28,9 +29,27 @@ public class UsuarioRepository : IUsuarioRepository
             .FirstOrDefaultAsync(u => u.Id == id);
     }
 
-    public async Task AgregarAsync(Usuario usuario)
+    public async Task<bool> ExisteEmailAsync(string email)
     {
+        return await _context.Usuarios
+            .AnyAsync(u => u.Email == email);
+    }
+
+    public async Task<bool> ExisteDniPacienteAsync(string dni)
+    {
+        return await _context.Pacientes
+            .AnyAsync(p => p.DNI == dni);
+    }
+
+    public async Task RegistrarPacienteAsync(
+        Usuario usuario,
+        Paciente paciente)
+    {
+        paciente.Usuario = usuario;
+
         await _context.Usuarios.AddAsync(usuario);
+        await _context.Pacientes.AddAsync(paciente);
+
         await _context.SaveChangesAsync();
     }
 }

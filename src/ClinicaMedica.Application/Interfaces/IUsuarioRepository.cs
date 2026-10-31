@@ -8,5 +8,9 @@ public interface IUsuarioRepository
 
     Task<Usuario?> ObtenerPorIdAsync(int id);
 
-    Task AgregarAsync(Usuario usuario);
+    Task<bool> ExisteEmailAsync(string email);
+
+    Task<bool> ExisteDniPacienteAsync(string dni);
+
+    Task RegistrarPacienteAsync(Usuario usuario, Paciente paciente);
 }
