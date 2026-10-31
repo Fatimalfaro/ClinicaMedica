@@ -3,10 +3,13 @@ using ClinicaMedica.Application.Services;
 using ClinicaMedica.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using ClinicaMedica.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClinicaMedica.Api.Controllers;
 
 [ApiController]
+[Authorize(Policy = "MedicoOAdministrador")]
+
 [Route("api/[controller]")]
 public class PagosController : ControllerBase
 {
