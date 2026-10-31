@@ -46,4 +46,35 @@ public class TurnoService
     {
         return _turnoRepository.ExisteMedicoAsync(medicoId);
     }
+
+
+    public Task<List<Turno>> ObtenerPorPacienteUsuarioAsync(int usuarioId)
+    {
+        return _turnoRepository.ObtenerPorPacienteUsuarioAsync(usuarioId);
+    }
+
+    public Task<List<Turno>> ObtenerPorMedicoUsuarioAsync(int usuarioId)
+    {
+        return _turnoRepository.ObtenerPorMedicoUsuarioAsync(usuarioId);
+    }
+
+    public Task<Turno?> ObtenerPorIdYPacienteUsuarioAsync(
+        int turnoId, int usuarioId)
+    {
+        return _turnoRepository.ObtenerPorIdYPacienteUsuarioAsync(
+            turnoId, usuarioId);
+    }
+
+    public Task<Turno?> ObtenerPorIdYMedicoUsuarioAsync(
+        int turnoId, int usuarioId)
+    {
+        return _turnoRepository.ObtenerPorIdYMedicoUsuarioAsync(
+            turnoId, usuarioId);
+    }
+
+    public Task<Paciente?> ObtenerPacientePorUsuarioIdAsync(int usuarioId)
+    {
+        return _turnoRepository.ObtenerPacientePorUsuarioIdAsync(usuarioId);
+    }
+
 }

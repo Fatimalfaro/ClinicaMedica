@@ -2,10 +2,13 @@ using ClinicaMedica.Application.DTOs;
 using ClinicaMedica.Application.Services;
 using ClinicaMedica.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClinicaMedica.Api.Controllers;
 
 [ApiController]
+[Authorize(Policy = "SoloAdministrador")]
+
 [Route("api/pacientes")]
 public class PacientesController : ControllerBase
 {

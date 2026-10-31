@@ -7,6 +7,9 @@ using ClinicaMedica.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ClinicaMedica.Domain.Entities;
+using ClinicaMedica.Api.Services;
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +72,9 @@ builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUsuarioActualService, UsuarioActualService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
@@ -106,7 +112,19 @@ builder.Services
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("SoloAdministrador", policy =>
+        policy.RequireRole(nameof(RolUsuario.Administrador)));
+
+    options.AddPolicy("MedicoOAdministrador", policy =>
+        policy.RequireRole(
+            nameof(RolUsuario.Medico),
+            nameof(RolUsuario.Administrador)));
+
+    options.AddPolicy("SoloPaciente", policy =>
+        policy.RequireRole(nameof(RolUsuario.Paciente)));
+});
 
 var app = builder.Build();
 

@@ -2,10 +2,13 @@ using ClinicaMedica.Application.Interfaces;
 using ClinicaMedica.Application.Services;
 using ClinicaMedica.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClinicaMedica.Api.Controllers;
 
 [ApiController]
+[AllowAnonymous]
+
 [Route("api/notificaciones/mercado-pago")]
 public class NotificacionesPagoController : ControllerBase
 {

@@ -2,6 +2,7 @@ using ClinicaMedica.Application.DTOs;
 using ClinicaMedica.Application.Services;
 using ClinicaMedica.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ClinicaMedica.Api.Controllers;
 
@@ -17,6 +18,7 @@ public class EspecialidadesController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> ObtenerTodas()
     {
         var especialidades = await _service.ObtenerTodasAsync();
@@ -41,6 +43,7 @@ public class EspecialidadesController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [AllowAnonymous]
     public async Task<IActionResult> ObtenerPorId(int id)
     {
         var especialidad = await _service.ObtenerPorIdAsync(id);
@@ -59,6 +62,7 @@ public class EspecialidadesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "SoloAdministrador")]
     public async Task<IActionResult> Crear(Especialidad especialidad)
     {
         await _service.AgregarAsync(especialidad);
@@ -77,6 +81,7 @@ public class EspecialidadesController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [Authorize(Policy = "SoloAdministrador")]
     public async Task<IActionResult> Actualizar(int id, Especialidad datos)
     {
         var especialidad = await _service.ObtenerPorIdAsync(id);
@@ -100,6 +105,7 @@ public class EspecialidadesController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
+    [Authorize(Policy = "SoloAdministrador")]
     public async Task<IActionResult> Eliminar(int id)
     {
         var especialidad = await _service.ObtenerPorIdAsync(id);
