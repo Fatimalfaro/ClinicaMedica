@@ -40,8 +40,19 @@ public class MedicosController : ControllerBase
 
     [HttpPost]
     [Authorize(Policy = "SoloAdministrador")]
-    public async Task<IActionResult> Crear(Medico medico)
+    public async Task<IActionResult> Crear(CrearMedicoDto datos)
     {
+        var medico = new Medico
+        {
+            Nombre = datos.Nombre.Trim(),
+            Apellido = datos.Apellido.Trim(),
+            Matricula = datos.Matricula.Trim(),
+            Email = datos.Email.Trim().ToLowerInvariant(),
+            Telefono = datos.Telefono.Trim(),
+            PrecioConsulta = datos.PrecioConsulta,
+            EspecialidadId = datos.EspecialidadId
+        };
+
         await _service.AgregarAsync(medico);
 
         var medicoCreado = await _service.ObtenerPorIdAsync(medico.Id);
@@ -54,18 +65,20 @@ public class MedicosController : ControllerBase
 
     [HttpPut("{id:int}")]
     [Authorize(Policy = "SoloAdministrador")]
-    public async Task<IActionResult> Actualizar(int id, Medico datos)
+    public async Task<IActionResult> Actualizar(
+        int id,
+        ActualizarMedicoDto datos)
     {
         var medico = await _service.ObtenerPorIdAsync(id);
 
         if (medico == null)
             return NotFound(new { mensaje = "Medico no encontrado" });
 
-        medico.Nombre = datos.Nombre;
-        medico.Apellido = datos.Apellido;
-        medico.Matricula = datos.Matricula;
-        medico.Email = datos.Email;
-        medico.Telefono = datos.Telefono;
+        medico.Nombre = datos.Nombre.Trim();
+        medico.Apellido = datos.Apellido.Trim();
+        medico.Matricula = datos.Matricula.Trim();
+        medico.Email = datos.Email.Trim().ToLowerInvariant();
+        medico.Telefono = datos.Telefono.Trim();
         medico.PrecioConsulta = datos.PrecioConsulta;
         medico.EspecialidadId = datos.EspecialidadId;
 

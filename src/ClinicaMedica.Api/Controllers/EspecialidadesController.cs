@@ -63,8 +63,14 @@ public class EspecialidadesController : ControllerBase
 
     [HttpPost]
     [Authorize(Policy = "SoloAdministrador")]
-    public async Task<IActionResult> Crear(Especialidad especialidad)
+    public async Task<IActionResult> Crear(CrearEspecialidadDto datos)
     {
+        var especialidad = new Especialidad
+        {
+            Nombre = datos.Nombre.Trim(),
+            Descripcion = datos.Descripcion.Trim()
+        };
+
         await _service.AgregarAsync(especialidad);
 
         var resultado = new EspecialidadSimpleDto
@@ -82,19 +88,21 @@ public class EspecialidadesController : ControllerBase
 
     [HttpPut("{id:int}")]
     [Authorize(Policy = "SoloAdministrador")]
-    public async Task<IActionResult> Actualizar(int id, Especialidad datos)
+    public async Task<IActionResult> Actualizar(
+        int id,
+        ActualizarEspecialidadDto datos)
     {
         var especialidad = await _service.ObtenerPorIdAsync(id);
 
         if (especialidad == null)
             return NotFound(new { mensaje = "Especialidad no encontrada" });
 
-        especialidad.Nombre = datos.Nombre;
-        especialidad.Descripcion = datos.Descripcion;
+        especialidad.Nombre = datos.Nombre.Trim();
+        especialidad.Descripcion = datos.Descripcion.Trim();
 
         await _service.ActualizarAsync(especialidad);
 
-         var resultado = new EspecialidadSimpleDto
+        var resultado = new EspecialidadSimpleDto
         {
             Id = especialidad.Id,
             Nombre = especialidad.Nombre,
@@ -103,7 +111,6 @@ public class EspecialidadesController : ControllerBase
 
         return Ok(resultado);
     }
-
     [HttpDelete("{id:int}")]
     [Authorize(Policy = "SoloAdministrador")]
     public async Task<IActionResult> Eliminar(int id)
