@@ -7,7 +7,7 @@ public class ActualizarRecetaDto
     [Range(1, int.MaxValue)]
     public int HistoriaClinicaId { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Las indicaciones son obligatorias.")]
     [StringLength(2000, MinimumLength = 5)]
     public string Indicaciones { get; set; } = string.Empty;
 }
